@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank IKO</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="font/bank.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="apple-touch-icon" href="images/iko.png">
+</head>
+<body>
+  <div id="formularz-container">
+    <form id="dane-formularz">
+      <div class="form-header" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <h2 style="margin: 0;">Podaj swoje dane</h2>
+        <img src="images/moreup.png" alt="info" id="info-emoji" style="width: 28px; height: 28px; cursor: pointer;">
+      </div>
+      <div id="info-bubble"></div>
+      <label>Imię:<br><input type="text" id="imie" required></label><br>
+      <label>Nazwisko:<br><input type="text" id="nazwisko" required></label><br>
+      <label>Ulica i nr domu:<br><input type="text" id="ulica" required></label><br>
+      <label>Kod pocztowy:<br><input type="text" id="kod" required></label><br>
+      <label>Miejscowość:<br><input type="text" id="miasto" required></label><br>
+      <button type="submit">Zatwierdź</button>
+    </form>
+  </div>
+  <div id="app-container" style="display:none;">
+    <header class="bank-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="user-initials" id="user-initials">RP</div>
+        <img src="images/down.png" alt="down" style="width:22px;height:22px;">
+      </div>
+      <div class="header-icons">
+        <img src="images/chat-bubble.png" alt="chat" class="header-icon-blue">
+        <img src="images/notification.png" alt="notification" class="header-icon-blue">
+        <img src="images/contactless.png" alt="contactless" class="header-icon-przelew">
+      </div>
+    </header>
+    <main>
+      <section class="konto-box">
+        <img src="images/moreup.png" alt="więcej" class="moreup-blue" style="width:28px;height:28px;position:absolute;top:12px;right:16px;z-index:2;">
+        <div class="konto-nazwa">
+          <span class="bank-label">PKO Bank Polski</span><br>
+          <span class="konto-typ">SUPERKONTO 3</span><br>
+          <span class="konto-nr" id="konto-nr">17 (...) 0317 1139</span>
+        </div>
+        <div class="konto-srodki">
+          <div style="display: flex; flex-direction: column; align-items: flex-end;">
+            <span class="konto-srodki-label">Dostępne środki</span>
+            <span class="konto-srodki-kwota"><span class="konto-srodki-kwota-num">1 871,78</span> <span class="konto-srodki-waluta">PLN</span></span>
+          </div>
+        </div>
+        <div class="konto-przyciski">
+          <button class="konto-historia"><img src="images/time.png" alt="historia" class="konto-historia-emoji"> Historia</button>
+          <button class="konto-przelew"><img src="images/money.png" alt="przelew" class="konto-przelew-emoji"> Przelew</button>
+        </div>
+      </section>
+      <div class="slider-dots">
+        <span class="slider-dot active"></span>
+        <span class="slider-dot"></span>
+        <span class="slider-dot"></span>
+        <span class="slider-dot"></span>
+        <span class="slider-dot"></span>
+        <span class="slider-dot"></span>
+      </div>
+      <section class="blik-box" style="margin-top: 24px;">
+        <div class="blik-content">
+          <img src="images/blik.png" alt="blik" class="blik-ikonka"> 
+          <span class="blik-text">Kod BLIK</span>
+          <span class="blik-separator"></span>
+          <span class="blik-arrow"><img src="images/down.png" alt="więcej"></span>
+        </div>
+      </section>
+      <section class="skarb-box">
+        <div class="skarb-header">
+          Skarbonki oszczędnościowe
+          <img src="images/moreup.png" alt="więcej" class="moreup-blue" style="width:28px;height:28px;position:absolute;top:12px;right:16px;z-index:2;">
+        </div>
+        <div class="skarb-content">
+          <div class="skarb-ikona"><img src="images/cart.png" alt="skarb" class="skarb-ikona-img"></div>
+          <div class="skarb-info">
+            <span class="skarb-nazwa-label">Skarbonka</span>
+            <span class="skarb-nazwa">Nic</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div class="footer-spacer"></div>
+    <footer class="bank-footer">
+      <nav>
+        <button id="nav-start"><img src="images/home.png" alt="start" class="footer-icon"> Start</button>
+        <button><img src="images/transfer.png" alt="platnosci" class="footer-icon"> Płatności</button>
+        <button><img src="images/products.png" alt="produkty" class="footer-icon"> Moje produkty</button>
+        <button><img src="images/bag.png" alt="oferta" class="footer-icon"> Oferta</button>
+        <button id="nav-more"><img src="images/more.png" alt="wiecej" class="footer-icon"> Więcej</button>
+      </nav>
+    </footer>
+  </div>
+  <script>
+    // Funkcja do losowania numeru konta
+    function losujNumerKonta() {
+      const prefix = '17';
+      const mid = String(Math.floor(1000 + Math.random() * 9000));
+      const end = String(Math.floor(1000 + Math.random() * 9000));
+      return `${prefix} (...) ${mid} ${end}`;
+    }
+    // Obsługa formularza
+    let saldo = 0.00;
+    let kontoNr = '17 (...) 0317 1139';
+    document.getElementById('dane-formularz').onsubmit = function(e) {
+      e.preventDefault();
+      const imie = document.getElementById('imie').value.trim();
+      const nazwisko = document.getElementById('nazwisko').value.trim();
+      // Inicjały
+      const inicjaly = (imie[0] || '').toUpperCase() + (nazwisko[0] || '').toUpperCase();
+      document.getElementById('user-initials').textContent = inicjaly;
+      // Losowy numer konta
+      kontoNr = losujNumerKonta();
+      document.getElementById('konto-nr').textContent = kontoNr;
+      // Ukryj formularz, pokaż aplikację
+      document.getElementById('formularz-container').style.display = 'none';
+      document.getElementById('app-container').style.display = 'block';
+    };
+    // Obsługa aktywnej zakładki w stopce
+    const navBtns = document.querySelectorAll('.bank-footer button');
+    function setActiveNav(idx) {
+      navBtns.forEach((btn, i) => {
+        if(i === idx) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+    }
+    navBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => setActiveNav(idx));
+    });
+    setActiveNav(0); // domyślnie Start
+    // Info bubble
+    const infoEmoji = document.getElementById('info-emoji');
+    const infoBubble = document.getElementById('info-bubble');
+    infoBubble.innerHTML = `<div class='info-bubble-content'>
+      <b>Nie podawaj swoich prawdziwych danych</b><br>
+      Aplikacja została stworzona wyłącznie do celów edukacyjnych i nie posiada żadnych prawdziwych pieniędzy.
+    </div>`;
+    infoEmoji.addEventListener('click', function(e) {
+      e.stopPropagation();
+      infoBubble.classList.toggle('active');
+    });
+    document.addEventListener('click', function(e) {
+      if (infoBubble.classList.contains('active')) {
+        infoBubble.classList.remove('active');
+      }
+    });
+    infoBubble.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+    // Panel "Więcej" i obsługa motywu
+    const navMore = document.getElementById('nav-more');
+    const navStart = document.getElementById('nav-start');
+    function getMain() {
+      return document.querySelector('main');
+    }
+    function updateHeaderIconsDarkMode() {
+      const isDark = document.body.classList.contains('dark-mode');
+      document.querySelectorAll('.header-icons img').forEach(img => {
+        if(isDark && img.src.includes('chat-bubble.png')) {
+          img.style.filter = 'invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%)';
+        } else if(isDark && img.alt === 'notification') {
+          img.style.filter = 'invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%)';
+        } else if(isDark && img.alt === 'contactless') {
+          img.style.filter = 'invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%)';
+        } else {
+          img.style.filter = '';
+        }
+      });
+    }
+    function renderMain() {
+      const main = getMain();
+      document.querySelector('header.bank-header').classList.toggle('dark-header', document.body.classList.contains('dark-mode'));
+      // Formatowanie salda z przesuniętą pierwszą cyfrą
+      let saldoStr = saldo.toLocaleString('pl-PL', {minimumFractionDigits:2, maximumFractionDigits:2});
+      saldoStr = saldoStr.replace(/^(\d)/, '<span class="saldo-first-digit">$1</span>');
+      main.innerHTML = `
+        <section class="konto-box">
+          <img src="images/moreup.png" alt="więcej" class="moreup-blue" style="width:28px;height:28px;position:absolute;top:12px;right:16px;z-index:2;">
+          <div class="konto-nazwa">
+            <span class="bank-label">PKO Bank Polski</span><br>
+            <span class="konto-typ">SUPERKONTO 3</span><br>
+            <span class="konto-nr" id="konto-nr">${kontoNr}</span>
+          </div>
+          <div class="konto-srodki">
+            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+              <span class="konto-srodki-label">Dostępne środki</span>
+              <span class="konto-srodki-kwota"><span class="konto-srodki-kwota-num">${saldoStr}</span> <span class="konto-srodki-waluta">PLN</span></span>
+            </div>
+          </div>
+          <div class="konto-przyciski">
+            <button class="konto-historia"><img src="images/time.png" alt="historia" class="konto-historia-emoji"> Historia</button>
+            <button class="konto-przelew"><img src="images/money.png" alt="przelew" class="konto-przelew-emoji"> Przelew</button>
+          </div>
+        </section>
+        <div class="slider-dots">
+          <span class="slider-dot active"></span>
+          <span class="slider-dot"></span>
+          <span class="slider-dot"></span>
+          <span class="slider-dot"></span>
+          <span class="slider-dot"></span>
+          <span class="slider-dot"></span>
+        </div>
+        <section class="blik-box" style="margin-top: 24px;">
+          <div class="blik-content">
+            <img src="images/blik.png" alt="blik" class="blik-ikonka"> 
+            <span class="blik-text">Kod BLIK</span>
+            <span class="blik-separator"></span>
+            <span class="blik-arrow"><img src="images/down.png" alt="więcej"></span>
+          </div>
+        </section>
+        <section class="skarb-box">
+          <div class="skarb-header">
+            Skarbonki oszczędnościowe
+            <img src="images/moreup.png" alt="więcej" class="moreup-blue" style="width:28px;height:28px;position:absolute;top:12px;right:16px;z-index:2;">
+          </div>
+          <div class="skarb-content">
+            <div class="skarb-ikona"><img src="images/cart.png" alt="skarb" class="skarb-ikona-img"></div>
+            <div class="skarb-info">
+              <span class="skarb-nazwa-label">Skarbonka</span>
+              <span class="skarb-nazwa">Nic</span>
+            </div>
+          </div>
+        </section>
+      `;
+      // Ikony w stopce na biało w dark mode
+      const isDark = document.body.classList.contains('dark-mode');
+      document.querySelectorAll('.bank-footer .footer-icon').forEach(img => {
+        if(isDark) img.style.filter = 'invert(1)';
+        else img.style.filter = '';
+      });
+      updateHeaderIconsDarkMode();
+    }
+    function renderMore() {
+      const main = getMain();
+      main.innerHTML = `
+        <section class="more-section">
+          <div class="more-title">Więcej</div>
+          <div class="more-switch-group">
+            <div class="more-switch-labels">
+              <div class="more-switch-title">Tryb ciemny</div>
+              <div class="more-switch-desc">Włącz, aby przełączyć aplikację w tryb ciemny.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="toggle-darkmode">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="more-switch-group">
+            <div class="more-switch-labels">
+              <div class="more-switch-title">Zmiana salda</div>
+              <div class="more-switch-desc">Podaj nowe saldo, aby zaktualizować środki na koncie.</div>
+            </div>
+            <form id="saldo-form" class="more-saldo-form">
+              <input type="number" id="nowe-saldo" min="0" step="0.01" placeholder="Nowe saldo">
+              <div class="more-saldo-btn-wrap">
+                <button type="submit">Zmień</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      `;
+      document.getElementById('toggle-darkmode').checked = document.body.classList.contains('dark-mode');
+      document.getElementById('toggle-darkmode').addEventListener('change', function() {
+        if(this.checked) document.body.classList.add('dark-mode');
+        else document.body.classList.remove('dark-mode');
+        renderMain();
+        updateHeaderIconsDarkMode();
+      });
+      document.getElementById('saldo-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const noweSaldo = document.getElementById('nowe-saldo');
+        if(noweSaldo.value) saldo = parseFloat(noweSaldo.value);
+        renderMain();
+      });
+    }
+    navMore.addEventListener('click', () => {
+      renderMore();
+    });
+    navStart.addEventListener('click', () => {
+      renderMain();
+    });
+    document.body.addEventListener('classChange', function() {
+      renderMain();
+    });
+  </script>
+</body>
+</html> 

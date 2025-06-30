@@ -1,0 +1,978 @@
+@font-face {
+  font-family: 'BankFont';
+  src: url('font/bank.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'BankFont', Arial, sans-serif;
+  background: #f3f4f7;
+  margin: 0;
+  color: #222;
+  font-size: 15px;
+}
+
+#formularz-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f3f4f7;
+}
+
+#dane-formularz {
+  background: #fff;
+  padding: 32px 24px;
+  box-shadow: 0 2px 12px #0001;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: stretch;
+  border-radius: 12px;
+  border: none;
+}
+#dane-formularz h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.1em;
+  color: #1a2a4a;
+  text-align: left;
+  font-weight: bold;
+}
+#dane-formularz label {
+  font-size: 1em;
+  color: #1a2a4a;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0;
+}
+#dane-formularz input {
+  width: 100%;
+  padding: 10px 14px;
+  margin: 0;
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+#dane-formularz button {
+  margin-top: 12px;
+  background: #002f6c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 0;
+  font-size: 1.1em;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+  align-self: center;
+}
+
+#app-container {
+  max-width: 430px;
+  margin: 0 auto;
+  background: #f3f4f7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.bank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 18px 10px 18px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+}
+.user-initials {
+  background: #f2f2f2;
+  color: #002f6c;
+  font-weight: bold;
+  font-size: 1.1em;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px #0001;
+}
+.header-icons {
+  display: flex;
+  gap: 18px;
+}
+.header-icons img {
+  width: 20px;
+  height: 20px;
+}
+.header-icon-blue {
+  width: 20px;
+  height: 20px;
+  filter: invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%);
+}
+.header-icon-przelew {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) saturate(100%) invert(13%) sepia(99%) saturate(749%) hue-rotate(186deg) brightness(97%) contrast(101%);
+}
+
+.konto-box, .blik-box, .skarb-box, .lokaty-box, .kredyty-box {
+  background: #fff;
+  margin: 18px 14px 0 14px;
+  border-radius: 7px;
+  box-shadow: 0 2px 12px #0001;
+  padding: 14px 14px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1.5px solid #cfd8dc;
+  position: relative;
+}
+.konto-box {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  gap: 0;
+}
+.konto-nazwa {
+  margin-bottom: 8px;
+}
+.bank-label {
+  font-size: 0.9em;
+  color: #222;
+  background: #f2f2f2;
+  border-radius: 6px;
+  padding: 2px 8px;
+  margin-bottom: 2px;
+  display: inline-block;
+}
+.konto-typ {
+  font-size: 1.1em;
+  color: #222;
+  font-weight: bold;
+}
+.konto-nr {
+  font-size: 1em;
+  color: #757575;
+}
+.konto-srodki {
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 0;
+  min-height: 0;
+}
+.konto-srodki-label {
+  font-size: 1.08em;
+  color: #757575;
+  margin-bottom: 2px;
+  margin-top: 0;
+  display: block;
+  text-align: right;
+  margin-right: 8px;
+}
+.konto-srodki-kwota {
+  font-size: 2.1em;
+  color: #222;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 0;
+  float: right;
+  margin-right: 8px;
+}
+.konto-srodki-kwota-num {
+  position: relative;
+}
+.konto-srodki-kwota-num span.saldo-first-digit {
+  display: inline-block;
+  margin-right: 0.12em;
+  position: relative;
+  left: -0.10em;
+}
+.konto-srodki-waluta {
+  font-size: 0.7em;
+  color: #222;
+  margin-left: 2px;
+  letter-spacing: 0.04em;
+  position: relative;
+  top: -2px;
+}
+.konto-przyciski {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.konto-historia {
+  flex: 1;
+  background: #fff;
+  color: #222 !important;
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 1em;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.konto-historia-emoji {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+  filter: brightness(0) saturate(100%) invert(13%) sepia(99%) saturate(749%) hue-rotate(186deg) brightness(97%) contrast(101%);
+}
+.konto-przelew {
+  flex: 1;
+  background: #002f6c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 1em;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.konto-przelew-emoji {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+  filter: none;
+}
+.konto-box .dots-menu {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 22px;
+  height: 22px;
+  background: url('images/more.png') no-repeat center/contain;
+  border: none;
+  cursor: pointer;
+}
+
+.konto-box .slider-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px 0;
+}
+.konto-box + .slider-dots {
+  margin-top: -8px;
+  margin-bottom: 18px;
+}
+.konto-box .slider-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #cfd8dc;
+  display: inline-block;
+}
+.konto-box .slider-dot.active {
+  background: #113a67;
+  border-color: #113a67;
+}
+
+.blik-box {
+  background: #fff;
+  box-shadow: none;
+  border-radius: 12px;
+  border: 1.5px solid #cfd8dc;
+  margin: 18px 14px 0 14px;
+  padding: 0;
+  min-height: unset;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 44px;
+}
+.blik-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 12px;
+  background: none;
+  position: relative;
+}
+.blik-ikonka {
+  width: 28px;
+  height: 28px;
+  margin-right: 12px;
+  margin-left: 0;
+  display: inline-block;
+}
+.blik-text {
+  color: #222;
+  font-weight: 500;
+  font-size: 1.05em;
+  flex: 0 0 auto;
+  text-align: left;
+}
+.blik-separator {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  right: 64px;
+  width: 1.5px;
+  height: auto;
+  background: #cfd8dc;
+  margin: 0;
+  left: auto;
+  transform: none;
+}
+.blik-arrow {
+  position: absolute;
+  right: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+.blik-arrow img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  filter: invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%);
+}
+.blik-box .dots-menu {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 22px;
+  height: 22px;
+  background: url('images/more.png') no-repeat center/contain;
+  border: none;
+  cursor: pointer;
+}
+
+.skarb-box {
+  background: #fff;
+  margin: 18px 14px 0 14px;
+  border-radius: 7px;
+  box-shadow: 0 2px 12px #0001;
+  padding: 14px 14px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1.5px solid #cfd8dc;
+  position: relative;
+  min-height: 100px;
+}
+.skarb-header {
+  font-size: 1.18em;
+  color: #222;
+  font-weight: 500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.skarb-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 0;
+  min-height: 54px;
+  margin-top: 2px;
+}
+.skarb-ikona {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 2.5px solid #222;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0;
+  margin-top: 0;
+}
+.skarb-ikona-img {
+  width: 58px;
+  height: 58px;
+  filter: none;
+  filter: brightness(0) saturate(100%) invert(13%) sepia(99%) saturate(749%) hue-rotate(186deg) brightness(97%) contrast(101%);
+}
+.skarb-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 0;
+  margin-bottom: 4px;
+}
+.skarb-nazwa-label {
+  color: #757575;
+  font-size: 0.98em;
+  margin-bottom: 0;
+}
+.skarb-nazwa {
+  color: #222;
+  font-size: 1.15em;
+  font-weight: bold;
+  margin-top: 0;
+}
+.footer-spacer {
+  min-height: 70px;
+}
+.skarb-box .dots-menu {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 22px;
+  height: 22px;
+  background: url('images/more.png') no-repeat center/contain;
+  border: none;
+  cursor: pointer;
+}
+
+.lokaty-box, .kredyty-box {
+  margin-bottom: 8px;
+  min-height: 60px;
+}
+.lokaty-box .dots-menu, .kredyty-box .dots-menu {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 22px;
+  height: 22px;
+  background: url('images/more.png') no-repeat center/contain;
+  border: none;
+  cursor: pointer;
+}
+.lokaty-srodki-label, .kredyty-srodki-label {
+  font-size: 0.95em;
+  color: #757575;
+  float: right;
+}
+.lokaty-srodki, .kredyty-srodki {
+  font-size: 1.2em;
+  color: #002f6c;
+  font-weight: bold;
+  float: right;
+}
+
+.bank-footer {
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 0;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0;
+  z-index: 10;
+}
+.bank-footer nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 0;
+  padding: 0 0 2px 0;
+}
+.bank-footer button {
+  background: none;
+  border: none;
+  color: #002f6c;
+  font-size: 0.93em;
+  font-family: inherit;
+  padding: 6px 0 2px 0;
+  cursor: pointer;
+  border-radius: 0;
+  font-weight: normal;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transition: background 0.2s, color 0.2s;
+  position: relative;
+  min-width: 0;
+  min-height: 48px;
+  gap: 0;
+}
+.bank-footer button img {
+  display: block;
+  margin-bottom: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 22px;
+  height: 22px;
+}
+.bank-footer button.active {
+  color: #002f6c;
+  font-weight: bold;
+}
+.bank-footer button.active::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 18%;
+  right: 18%;
+  height: 3px;
+  background: #002f6c;
+  border-radius: 2px 2px 0 0;
+}
+.bank-footer button:active, .bank-footer button:focus, .bank-footer button:hover {
+  background: none;
+}
+
+.bank-footer button img.footer-icon {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  filter: grayscale(100%) brightness(0.3);
+  transition: filter 0.2s;
+}
+.bank-footer button.active img.footer-icon {
+  filter: none;
+  /* niebieski: #2366d1 */
+  filter: invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%);
+}
+
+.fab-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 80px;
+  width: 56px;
+  height: 56px;
+  background: #2366d1;
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1em;
+  border: none;
+  z-index: 20;
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  #app-container, #formularz-container {
+    max-width: 100vw;
+    padding: 0;
+  }
+  .konto-box, .skarb-box, .lokaty-box, .kredyty-box, .blik-box {
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+  .fab-btn {
+    right: 12px;
+    bottom: 70px;
+    width: 48px;
+    height: 48px;
+    font-size: 1.7em;
+  }
+}
+
+#info-bubble {
+  display: none;
+  position: fixed !important;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  z-index: 9999;
+  max-width: 340px;
+  width: 96vw;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(.4,1.2,.4,1), opacity 0.3s;
+  transform: translateY(100%);
+  opacity: 0;
+}
+#info-bubble.active {
+  display: block;
+  pointer-events: auto;
+  transform: translateY(0);
+  opacity: 1;
+}
+.info-bubble-content {
+  background: #fff;
+  color: #222;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -2px 24px #0002;
+  padding: 22px 18px 18px 18px;
+  font-size: 1.05em;
+  max-width: 340px;
+  min-width: 180px;
+  text-align: center;
+  z-index: 100;
+  border: 1.5px solid #cfd8dc;
+  margin: 0 auto;
+}
+
+.dots-menu {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  position: static !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moreup-blue {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(99%) saturate(749%) hue-rotate(186deg) brightness(97%) contrast(101%);
+}
+
+/* DARK MODE */
+body.dark-mode {
+  background: #121212 !important;
+  color: #fff;
+}
+body.dark-mode #app-container,
+body.dark-mode #formularz-container {
+  background: #121212 !important;
+}
+body.dark-mode .konto-box,
+body.dark-mode .blik-box,
+body.dark-mode .skarb-box,
+body.dark-mode .lokaty-box,
+body.dark-mode .kredyty-box,
+body.dark-mode .more-section,
+body.dark-mode .more-switch-group {
+  background: #1a1a1a !important;
+  color: #fff;
+}
+body.dark-mode .blik-text {
+  color: #fff !important;
+}
+body.dark-mode .bank-label,
+body.dark-mode .konto-srodki-label,
+body.dark-mode .skarb-header,
+body.dark-mode .skarb-nazwa-label {
+  color: #b0b0b0;
+  background: #232428;
+}
+body.dark-mode .konto-typ,
+body.dark-mode .konto-nr,
+body.dark-mode .konto-srodki-kwota,
+body.dark-mode .konto-srodki-waluta,
+body.dark-mode .skarb-nazwa {
+  color: #fff;
+}
+body.dark-mode .konto-historia {
+  background: #18191c;
+  color: #fff !important;
+  border-color: #333;
+}
+body.dark-mode .konto-przelew {
+  background: #1976ff;
+  color: #fff;
+}
+body.dark-mode .konto-historia-emoji {
+  filter: invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%) !important;
+}
+body.dark-mode .konto-przelew-emoji {
+  filter: none;
+}
+body.dark-mode .slider-dot {
+  background: #232428;
+  border-color: #333;
+}
+body.dark-mode .slider-dot.active {
+  background: #1976ff;
+  border-color: #1976ff;
+}
+body.dark-mode .blik-separator {
+  background: #333;
+}
+body.dark-mode .blik-box {
+  background: #232428;
+}
+body.dark-mode .skarb-ikona {
+  background: #232428;
+  border-color: #333;
+}
+body.dark-mode .skarb-ikona-img {
+  filter: brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(749%) hue-rotate(186deg) brightness(97%) contrast(101%);
+}
+body.dark-mode .moreup-blue {
+  filter: brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(749%) hue-rotate(186deg) brightness(97%) contrast(101%);
+}
+body.dark-mode .bank-footer {
+  background: #232428;
+  border-top: 1.5px solid #333;
+}
+body.dark-mode .bank-footer button {
+  color: #b0b0b0;
+}
+body.dark-mode .bank-footer button.active {
+  color: #1976ff;
+}
+body.dark-mode .bank-footer button.active::before {
+  background: #1976ff;
+}
+body.dark-mode input,
+body.dark-mode #dane-formularz {
+  background: #232428;
+  color: #fff;
+  border-color: #333;
+}
+body.dark-mode #dane-formularz button {
+  background: #1976ff;
+  color: #fff;
+}
+body.dark-mode .skarb-nazwa {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+body.dark-mode .header-icon-blue,
+body.dark-mode .header-icons img[alt="notification"],
+body.dark-mode .header-icons img[alt="chat-bubble"],
+body.dark-mode .header-icons img[alt="contactless"] {
+  filter: invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%) !important;
+}
+body.dark-mode .header-icons img[alt="chat-bubble"] {
+  filter: invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%) !important;
+}
+body.dark-mode .user-initials {
+  background: #121212 !important;
+  color: #fff !important;
+}
+
+#more-panel {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.32);
+  z-index: 99999;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#more-panel .more-inner {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px #0003;
+  max-width: 430px;
+  width: 96vw;
+  margin: 0 auto;
+  padding: 32px 16px;
+  position: relative;
+}
+body.dark-mode #more-panel .more-inner {
+  background: #232428;
+  color: #fff;
+}
+
+/* --- OPCJE "WIĘCEJ" --- */
+.more-section {
+  background: var(--main-bg, #f6f6f6);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.06);
+  padding: 32px 20px 40px 20px;
+  min-height: 400px;
+  margin-top: 8px;
+}
+.more-title {
+  font-family: 'bank', Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: var(--main-text, #1a1a1a);
+  letter-spacing: 0.01em;
+}
+.more-switch-group {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: var(--box-bg, #fff);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 20px 18px;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+.more-switch-labels {
+  flex: 1;
+}
+.more-switch-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--main-text, #1a1a1a);
+  margin-bottom: 4px;
+}
+.more-switch-desc {
+  font-size: 13px;
+  color: var(--desc-text, #6b6b6b);
+  line-height: 1.3;
+}
+/* Przełącznik styl IKO */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 26px;
+}
+.switch input {display:none;}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #e0e0e0;
+  border-radius: 26px;
+  transition: .3s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+  transition: .3s;
+}
+.switch input:checked + .slider {
+  background: #1a1a1a;
+}
+.switch input:checked + .slider:before {
+  transform: translateX(18px);
+  background: #ffd600;
+}
+.more-saldo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.more-saldo-btn-wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+.more-saldo-form button {
+  background: #0070c9;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'bank', Arial, sans-serif;
+  cursor: pointer;
+  transition: background .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.more-saldo-form button:hover {
+  background: #005fa3;
+}
+
+/* DARK MODE */
+body.dark-mode .more-section {
+  background: #1a1a1a;
+}
+body.dark-mode .more-title,
+body.dark-mode .more-switch-title {
+  color: #fff;
+}
+body.dark-mode .more-switch-group {
+  background: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+body.dark-mode .more-switch-desc {
+  color: #b0b0b0;
+}
+body.dark-mode .more-saldo-form input[type="number"] {
+  background: #232526;
+  color: #fff;
+  border: 1.5px solid #333;
+}
+body.dark-mode .more-saldo-form input[type="number"]:focus {
+  border: 1.5px solid #ffd600;
+}
+body.dark-mode .more-saldo-form button {
+  background: #ffd600;
+  color: #181a1b;
+  font-family: 'bank', Arial, sans-serif;
+}
+body.dark-mode .more-saldo-form button:hover {
+  background: #ffe066;
+}
+body.dark-mode .switch input:checked + .slider {
+  background: #ffd600;
+}
+body.dark-mode .switch input:checked + .slider:before {
+  background: #232526;
+}
+
+.dark-header {
+  background: #1c1c1c !important;
+  border-bottom: 1px solid #232323 !important;
+}
+body.dark-mode .header-icons img,
+body.dark-mode .header-icon-blue,
+body.dark-mode .header-icon-przelew {
+  filter: invert(1) !important;
+}
+
+/* DARK MODE: outline boxów */
+body.dark-mode .konto-box,
+body.dark-mode .blik-box,
+body.dark-mode .skarb-box,
+body.dark-mode .lokaty-box,
+body.dark-mode .kredyty-box {
+  border: 1.5px solid #333 !important;
+}
+
+/* Ikonka down obok inicjałów zawsze niebieska */
+.bank-header img[alt="down"] {
+  filter: invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%) !important;
+}
+
+/* Usuwam paski z nagłówków i sekcji */
+.konto-srodki-label,
+.skarb-header,
+.konto-box .slider-dots,
+.konto-box .slider-dot,
+.konto-box .slider-dot.active {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .konto-srodki-label,
+body.dark-mode .skarb-header {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+} 
