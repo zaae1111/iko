@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="pl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IKO</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preload" href="font/bank.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="apple-touch-icon" href="images/iko.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Bank IKO">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="font/bank.ttf" as="font" type="font/ttf" crossorigin>
+  
+    <!-- Ikona aplikacji -->
+    <link rel="apple-touch-icon" href="images/iko.png">
+  
+    <!-- Web App: iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bank IKO">
+  
+    <!-- Web App: Android i inne -->
+    <link rel="manifest" href="manifest.json">
+  </head>  
 <body>
   <div id="formularz-container">
     <form id="dane-formularz">
@@ -424,4 +431,4 @@
     document.querySelector('.blik-modal-backdrop').addEventListener('click', hideBlikModal);
   </script>
 </body>
-</html>
+</html> 
