@@ -594,9 +594,12 @@ body {
     max-width: 100vw;
     padding: 0;
   }
-  .konto-box, .skarb-box, .lokaty-box, .kredyty-box, .blik-box {
-    margin-left: 2px;
-    margin-right: 2px;
+  .konto-box, .blik-box, .skarb-box {
+    width: 99vw;
+    margin: 8px auto 0 auto;
+    padding: 8px 4px 10px 4px;
+    border-radius: 7px;
+    box-sizing: border-box;
   }
   .fab-btn {
     right: 12px;
@@ -1148,4 +1151,4 @@ body.dark-mode .blik-copy-btn {
 }
 body.dark-mode .blik-copy-btn:hover {
   background: #2366d1;
-}
+} 
