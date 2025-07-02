@@ -7,12 +7,6 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preload" href="font/bank.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="apple-touch-icon" href="images/iko.png">
-
-  <!-- Dodane metadane do trybu aplikacji -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="IKO">
-  
 </head>
 <body>
   <div id="formularz-container">
@@ -91,7 +85,6 @@
         </div>
       </section>
     </main>
-    <div class="footer-spacer"></div>
     <footer class="bank-footer">
       <nav>
         <button id="nav-start"><img src="images/home.png" alt="start" class="footer-icon"> Start</button>
@@ -101,6 +94,24 @@
         <button id="nav-more"><img src="images/more.png" alt="wiecej" class="footer-icon"> Więcej</button>
       </nav>
     </footer>
+  </div>
+  <div id="blik-modal" style="display:none;">
+    <div class="blik-modal-backdrop"></div>
+    <div class="blik-modal-content">
+      <div class="blik-modal-header">
+        <span id="blik-close" class="blik-close">&times;</span>
+        <span class="blik-modal-title">Kod BLIK</span>
+      </div>
+      <div class="blik-modal-body">
+        <img src="images/blik.png" alt="blik" class="blik-modal-img">
+        <div class="blik-modal-code" id="blik-kod">000 000</div>
+        <button class="blik-copy-btn" id="blik-copy">Skopiuj kod</button>
+        <div class="blik-modal-progress-wrap">
+          <div class="blik-modal-progress" id="blik-progress"></div>
+        </div>
+        <div class="blik-modal-timer" id="blik-timer">Kod aktywny jeszcze 2 min. 00 sek.</div>
+      </div>
+    </div>
   </div>
   <script>
     // Funkcja do losowania numeru konta
@@ -113,20 +124,50 @@
     // Obsługa formularza
     let saldo = 0.00;
     let kontoNr = '17 (...) 0317 1139';
+    let userData = null;
+    // Funkcja do zapisu danych do localStorage
+    function saveUserData(data) {
+      localStorage.setItem('ikoUserData', JSON.stringify(data));
+    }
+    // Funkcja do pobrania danych z localStorage
+    function loadUserData() {
+      const d = localStorage.getItem('ikoUserData');
+      return d ? JSON.parse(d) : null;
+    }
+    // Funkcja do ustawienia danych w UI
+    function setUserDataUI(data) {
+      document.getElementById('user-initials').textContent = data.inicjaly;
+      document.getElementById('konto-nr').textContent = data.kontoNr;
+    }
+    // Obsługa formularza
     document.getElementById('dane-formularz').onsubmit = function(e) {
       e.preventDefault();
       const imie = document.getElementById('imie').value.trim();
       const nazwisko = document.getElementById('nazwisko').value.trim();
+      const ulica = document.getElementById('ulica').value.trim();
+      const kod = document.getElementById('kod').value.trim();
+      const miasto = document.getElementById('miasto').value.trim();
       // Inicjały
       const inicjaly = (imie[0] || '').toUpperCase() + (nazwisko[0] || '').toUpperCase();
-      document.getElementById('user-initials').textContent = inicjaly;
       // Losowy numer konta
       kontoNr = losujNumerKonta();
-      document.getElementById('konto-nr').textContent = kontoNr;
+      userData = { imie, nazwisko, ulica, kod, miasto, inicjaly, kontoNr };
+      saveUserData(userData);
+      setUserDataUI(userData);
       // Ukryj formularz, pokaż aplikację
       document.getElementById('formularz-container').style.display = 'none';
       document.getElementById('app-container').style.display = 'block';
     };
+    // Sprawdź przy starcie, czy są dane użytkownika
+    window.addEventListener('DOMContentLoaded', function() {
+      userData = loadUserData();
+      if(userData) {
+        setUserDataUI(userData);
+        document.getElementById('formularz-container').style.display = 'none';
+        document.getElementById('app-container').style.display = 'block';
+        kontoNr = userData.kontoNr;
+      }
+    });
     // Obsługa aktywnej zakładki w stopce
     const navBtns = document.querySelectorAll('.bank-footer button');
     function setActiveNav(idx) {
@@ -167,11 +208,7 @@
     function updateHeaderIconsDarkMode() {
       const isDark = document.body.classList.contains('dark-mode');
       document.querySelectorAll('.header-icons img').forEach(img => {
-        if(isDark && img.src.includes('chat-bubble.png')) {
-          img.style.filter = 'invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%)';
-        } else if(isDark && img.alt === 'notification') {
-          img.style.filter = 'invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%)';
-        } else if(isDark && img.alt === 'contactless') {
+        if(isDark && (img.alt === 'chat' || img.alt === 'notification' || img.alt === 'contactless')) {
           img.style.filter = 'invert(32%) sepia(80%) saturate(747%) hue-rotate(186deg) brightness(95%) contrast(92%)';
         } else {
           img.style.filter = '';
@@ -243,6 +280,20 @@
     }
     function renderMore() {
       const main = getMain();
+      let daneForm = '';
+      if(userData) {
+        daneForm = `
+        <form id="zmien-dane-form" class="more-saldo-form" style="margin-top:18px;">
+          <div style="font-weight:600;margin-bottom:8px;">Zmień dane użytkownika</div>
+          <input type="text" id="nowe-imie" placeholder="Imię" value="${userData.imie}" required>
+          <input type="text" id="nowe-nazwisko" placeholder="Nazwisko" value="${userData.nazwisko}" required>
+          <input type="text" id="nowe-ulica" placeholder="Ulica i nr domu" value="${userData.ulica}" required>
+          <input type="text" id="nowe-kod" placeholder="Kod pocztowy" value="${userData.kod}" required>
+          <input type="text" id="nowe-miasto" placeholder="Miejscowość" value="${userData.miasto}" required>
+          <div class="more-saldo-btn-wrap"><button type="submit">Zapisz dane</button></div>
+        </form>
+        `;
+      }
       main.innerHTML = `
         <section class="more-section">
           <div class="more-title">Więcej</div>
@@ -268,6 +319,9 @@
               </div>
             </form>
           </div>
+          <div class="more-switch-group">
+            ${daneForm}
+          </div>
         </section>
       `;
       document.getElementById('toggle-darkmode').checked = document.body.classList.contains('dark-mode');
@@ -283,6 +337,21 @@
         if(noweSaldo.value) saldo = parseFloat(noweSaldo.value);
         renderMain();
       });
+      if(userData) {
+        document.getElementById('zmien-dane-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const imie = document.getElementById('nowe-imie').value.trim();
+          const nazwisko = document.getElementById('nowe-nazwisko').value.trim();
+          const ulica = document.getElementById('nowe-ulica').value.trim();
+          const kod = document.getElementById('nowe-kod').value.trim();
+          const miasto = document.getElementById('nowe-miasto').value.trim();
+          const inicjaly = (imie[0] || '').toUpperCase() + (nazwisko[0] || '').toUpperCase();
+          userData = { imie, nazwisko, ulica, kod, miasto, inicjaly, kontoNr };
+          saveUserData(userData);
+          setUserDataUI(userData);
+          renderMain();
+        });
+      }
     }
     navMore.addEventListener('click', () => {
       renderMore();
@@ -293,6 +362,63 @@
     document.body.addEventListener('classChange', function() {
       renderMain();
     });
+    // --- BLIK MODAL ---
+    const blikBox = document.querySelector('.blik-box');
+    const blikModal = document.getElementById('blik-modal');
+    const blikClose = document.getElementById('blik-close');
+    const blikKod = document.getElementById('blik-kod');
+    const blikCopy = document.getElementById('blik-copy');
+    const blikProgress = document.getElementById('blik-progress');
+    const blikTimer = document.getElementById('blik-timer');
+    let blikInterval = null;
+    let blikTimeout = null;
+    function losujBlikKod() {
+      return String(Math.floor(100000 + Math.random() * 900000)).replace(/(\d{3})(\d{3})/, '$1 $2');
+    }
+    function showBlikModal() {
+      // Losuj kod i ustaw czas
+      const czas = 120; // sekundy
+      let left = czas;
+      const kod = losujBlikKod();
+      blikKod.textContent = kod;
+      blikModal.style.display = 'block';
+      blikProgress.style.width = '100%';
+      blikProgress.style.transition = 'none';
+      setTimeout(() => {
+        blikProgress.style.transition = `width ${czas}s linear`;
+        blikProgress.style.width = '0%';
+      }, 10);
+      function updateTimer() {
+        left--;
+        if(left < 0) left = 0;
+        const min = Math.floor(left/60);
+        const sek = left%60;
+        blikTimer.textContent = `Kod aktywny jeszcze ${min} min. ${sek.toString().padStart(2,'0')} sek.`;
+        if(left === 0) {
+          clearInterval(blikInterval);
+          blikTimer.textContent = 'Kod wygasł';
+        }
+      }
+      blikTimer.textContent = `Kod aktywny jeszcze 2 min. 00 sek.`;
+      blikInterval = setInterval(updateTimer, 1000);
+      blikTimeout = setTimeout(() => {
+        clearInterval(blikInterval);
+        blikTimer.textContent = 'Kod wygasł';
+      }, czas*1000);
+      blikCopy.onclick = () => {
+        navigator.clipboard.writeText(kod);
+        blikCopy.textContent = 'Skopiowano!';
+        setTimeout(()=>{blikCopy.textContent='Skopiuj kod';}, 1200);
+      };
+    }
+    function hideBlikModal() {
+      blikModal.style.display = 'none';
+      clearInterval(blikInterval);
+      clearTimeout(blikTimeout);
+    }
+    blikBox.addEventListener('click', showBlikModal);
+    blikClose.addEventListener('click', hideBlikModal);
+    document.querySelector('.blik-modal-backdrop').addEventListener('click', hideBlikModal);
   </script>
 </body>
-</html> 
+</html>
