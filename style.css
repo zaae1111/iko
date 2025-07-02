@@ -13,7 +13,6 @@ body {
   font-size: 15px;
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
 }
 
 #formularz-container {
@@ -129,19 +128,20 @@ body {
 
 .konto-box, .blik-box, .skarb-box, .lokaty-box, .kredyty-box {
   background: #fff;
-  margin: 18px 14px 0 14px;
-  border-radius: 7px;
-  box-shadow: 0 2px 12px #0001;
-  padding: 14px 14px 18px 14px;
+  margin: 10px 6px 0 6px;
+  border-radius: 5px;
+  box-shadow: 0 1px 6px #0001;
+  padding: 8px 8px 12px 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border: 1.5px solid #cfd8dc;
+  gap: 6px;
+  border: 1px solid #cfd8dc;
   position: relative;
+  font-size: 0.97em;
 }
 .konto-box {
-  margin-top: 18px;
-  margin-bottom: 8px;
+  margin-top: 10px;
+  margin-bottom: 4px;
   gap: 0;
 }
 .konto-nazwa {
