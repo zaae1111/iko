@@ -93,6 +93,10 @@ body {
   padding: 18px 18px 10px 18px;
   background: #fff;
   border-bottom: 1px solid #e0e0e0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 430px;
 }
 .user-initials {
   background: #f2f2f2;
@@ -128,7 +132,7 @@ body {
 
 .konto-box, .blik-box, .skarb-box, .lokaty-box, .kredyty-box {
   background: #fff;
-  margin: 10px 6px 0 6px;
+  margin: 10px auto 0 auto;
   border-radius: 5px;
   box-shadow: 0 1px 6px #0001;
   padding: 8px 8px 12px 8px;
@@ -138,6 +142,8 @@ body {
   border: 1px solid #cfd8dc;
   position: relative;
   font-size: 0.97em;
+  width: 98%;
+  max-width: 430px;
 }
 .konto-box {
   margin-top: 10px;
@@ -1142,4 +1148,4 @@ body.dark-mode .blik-copy-btn {
 }
 body.dark-mode .blik-copy-btn:hover {
   background: #2366d1;
-} 
+}
